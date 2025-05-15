@@ -12,7 +12,7 @@ const config = getDefaultConfig({
   appName: "Pendapay",
   projectId: "YOUR_PROJECT_ID",
   chains: [holesky],
-  ssr: false,
+  ssr: true,
 });
 
 const client = new QueryClient();
