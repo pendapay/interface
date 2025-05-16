@@ -1,25 +1,51 @@
 "use client";
 import { NextPage } from "next";
 import { useEffect, useRef, useState } from "react";
-import {
-  useAccount,
-  useClient,
-  usePublicClient,
-  useReadContract,
-  useSignMessage,
-} from "wagmi";
+import { useAccount, usePublicClient, useSignMessage } from "wagmi";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import {
-  MAGIC_PAY_ADDRESS,
-  PROFILE_ADDRESS,
-  SIGN_IN_MESSAGE,
-  VIEWING_KEY,
-} from "@pendapay/constants";
-import { zeroAddress, zeroHash } from "viem";
+import { MAGIC_PAY_ADDRESS, SIGN_IN_MESSAGE } from "@pendapay/constants";
+import { Address, zeroAddress, zeroHash } from "viem";
+import DepositModal from "./components/depositModal";
 
 const tokenListMock = [
   {
-    image: "https://cdn.worldvectorlogo.com/logos/ethereum-eth.svg",
+    logo: "https://cdn.worldvectorlogo.com/logos/ethereum-eth.svg",
+    decimals: 18,
+    name: "Ethereum",
+    symbol: "ETH",
+    address: zeroAddress,
+  },
+  {
+    logo: "https://cdn.worldvectorlogo.com/logos/ethereum-eth.svg",
+    decimals: 18,
+    name: "Ethereum",
+    symbol: "ETH",
+    address: zeroAddress,
+  },
+  {
+    logo: "https://cdn.worldvectorlogo.com/logos/ethereum-eth.svg",
+    decimals: 18,
+    name: "Ethereum",
+    symbol: "ETH",
+    address: zeroAddress,
+  },
+  {
+    logo: "https://cdn.worldvectorlogo.com/logos/ethereum-eth.svg",
+    decimals: 18,
+    name: "Ethereum",
+    symbol: "ETH",
+    address: zeroAddress,
+  },
+  {
+    logo: "https://cdn.worldvectorlogo.com/logos/ethereum-eth.svg",
+    decimals: 18,
+    name: "Ethereum",
+    symbol: "ETH",
+    address: zeroAddress,
+  },
+  {
+    logo: "https://cdn.worldvectorlogo.com/logos/ethereum-eth.svg",
+    decimals: 18,
     name: "Ethereum",
     symbol: "ETH",
     address: zeroAddress,
@@ -29,6 +55,7 @@ const tokenListMock = [
 const Home: NextPage = () => {
   const { address } = useAccount();
   const [tokenList, setTokenList] = useState(tokenListMock);
+  const [isShowDepositModal, setIsShowDepositModal] = useState(false);
   const [balance, setBalance] = useState("$2.52");
   const signature = useRef<string | null>(null);
   const [change, setChange] = useState("-$0.08");
@@ -103,6 +130,10 @@ const Home: NextPage = () => {
     })();
   }, [address]);
 
+  const deposit = async (tokenAddress: Address, amount: string) => {
+    console.log("Deposit", tokenAddress, amount);
+  };
+
   if (!address) {
     return (
       <div className="min-h-screen bg-black text-white flex items-center justify-center">
@@ -143,7 +174,10 @@ const Home: NextPage = () => {
 
         {/* Right side: Action Buttons */}
         <div className="flex gap-3">
-          <button className="flex flex-col items-center justify-center w-14">
+          <button
+            className="flex flex-col items-center justify-center w-14 cursor-pointer"
+            onClick={() => setIsShowDepositModal(true)}
+          >
             <div className="bg-blue-600 hover:bg-blue-700 rounded-full p-2 mb-1">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -160,7 +194,7 @@ const Home: NextPage = () => {
             </div>
             <span className="text-xs">Deposit</span>
           </button>
-          <button className="flex flex-col items-center justify-center w-14">
+          <button className="flex flex-col items-center justify-center w-14 cursor-pointer">
             <div className="bg-blue-600 hover:bg-blue-700 rounded-full p-2 mb-1">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -177,7 +211,7 @@ const Home: NextPage = () => {
             </div>
             <span className="text-xs">Send</span>
           </button>
-          <button className="flex flex-col items-center justify-center w-14">
+          <button className="flex flex-col items-center justify-center w-14 cursor-pointer">
             <div className="bg-blue-600 hover:bg-blue-700 rounded-full p-2 mb-1">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -194,7 +228,7 @@ const Home: NextPage = () => {
             </div>
             <span className="text-xs">Receive</span>
           </button>
-          <button className="flex flex-col items-center justify-center w-14">
+          <button className="flex flex-col items-center justify-center w-14 cursor-pointer">
             <div className="bg-blue-600 hover:bg-blue-700 rounded-full p-2 mb-1">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -264,6 +298,12 @@ const Home: NextPage = () => {
           </div>
         ))}
       </div>
+      <DepositModal
+        isOpen={isShowDepositModal}
+        onDeposit={deposit}
+        onClose={() => setIsShowDepositModal(false)}
+        commonTokens={tokenList}
+      />
     </div>
   );
 };
