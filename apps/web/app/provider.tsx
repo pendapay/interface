@@ -3,7 +3,7 @@ import "@rainbow-me/rainbowkit/styles.css";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { WagmiProvider } from "wagmi";
-import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
+import { darkTheme, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { AppProgressBar } from "next-nprogress-bar";
 import { getDefaultConfig } from "@rainbow-me/rainbowkit";
 import { holesky } from "wagmi/chains";
@@ -21,7 +21,16 @@ const Provider = ({ children }: { children: React.ReactNode }) => {
   return (
     <WagmiProvider config={config} reconnectOnMount>
       <QueryClientProvider client={client}>
-        <RainbowKitProvider>{children}</RainbowKitProvider>
+        <RainbowKitProvider
+          initialChain={holesky}
+          theme={darkTheme({
+            accentColorForeground: "white",
+            // fontStack: "system",
+            overlayBlur: "large",
+          })}
+        >
+          {children}
+        </RainbowKitProvider>
       </QueryClientProvider>
       <AppProgressBar
         color="#ffffff"

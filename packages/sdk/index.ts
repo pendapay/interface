@@ -5,4 +5,3 @@ class PendaPaySDK {
 }
 
 export { PendaPaySDK };
-export * from "./constants";
